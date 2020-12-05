@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EcGameMode.generated.h"
 
+class AEcCharacter;
 UCLASS(minimalapi)
 class AEcGameMode : public AGameModeBase
 {
@@ -13,6 +14,8 @@ class AEcGameMode : public AGameModeBase
 
 public:
 	AEcGameMode();
+
+	void DeliverRelic(AEcCharacter* deliveryPlayer);
 };
 
 
