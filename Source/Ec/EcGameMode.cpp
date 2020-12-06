@@ -23,7 +23,7 @@ void AEcGameMode::DeliverRelic(AEcCharacter* deliveryPlayer)
 	AEcGameState* GS = GetGameState<AEcGameState>();
 
 	GS->CurrentRelics = GS->CurrentRelics + 1;
-	UE_LOG(LogTemp, Log, TEXT("%d out of $d relics collected"), GS->CurrentRelics, GS->RelicsToWin);
+	UE_LOG(LogTemp, Log, TEXT("%d out of %d relics collected"), GS->CurrentRelics, GS->RelicsToWin);
 	
 	if (GS->CurrentRelics >= GS->RelicsToWin)
 	{
