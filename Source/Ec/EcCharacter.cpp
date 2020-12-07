@@ -307,3 +307,25 @@ bool AEcCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputC
 	
 	return false;
 }
+
+bool AEcCharacter::PickupRelic(const EcRelicType& relicType)
+{
+	if (this->HasRelic) {
+		return false;
+	}
+
+	this->RelicType = relicType;
+	return true;
+}
+
+EcRelicType AEcCharacter::DropOffRelic()
+{
+	if (this->HasRelic) {
+		return EcRelicType::None;
+	}
+
+	EcRelicType relicType = this->RelicType;
+	this->RelicType = EcRelicType::None;
+	this->HasRelic = false;
+	return relicType;
+}

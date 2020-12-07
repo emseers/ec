@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "EcRelicType.h"
 #include "EcCharacter.generated.h"
 
 class UInputComponent;
@@ -141,5 +142,16 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+protected:
+	UPROPERTY()
+	EcRelicType RelicType;
+
+public:
+	UPROPERTY()
+	bool HasRelic;
+
+	bool PickupRelic(const EcRelicType& relicType);
+
+	EcRelicType DropOffRelic();
 };
 

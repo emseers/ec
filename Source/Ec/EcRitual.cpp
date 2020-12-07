@@ -3,8 +3,6 @@
 
 #include "EcRitual.h"
 
-
-
 #include "EcCharacter.h"
 #include "EcGameMode.h"
 #include "Components/BoxComponent.h"
@@ -51,10 +49,10 @@ void AEcRitual::OnRitualZoneEnter(UPrimitiveComponent* OverlappedComponent, AAct
 	if (GM) {
 		const auto player = Cast<AEcCharacter>(OtherActor);
 
-		// TODO: @Mouse. Check if player has relic
-		if(player != nullptr)
+		if(player != nullptr && player->HasRelic)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Player %s, delivered relic"), *player->GetFullName());
+			UE_LOG(LogTemp, Log, TEXT("Player %s delivered relic"), *player->GetFullName());
+			this->Relics.Add(player->DropOffRelic());
 			GM->DeliverRelic(player);
 		}
 	}
