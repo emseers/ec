@@ -143,12 +143,12 @@ public:
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 protected:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	EcRelicType RelicType;
 
 public:
-	UPROPERTY()
-	bool HasRelic;
+	UFUNCTION(BlueprintCallable)
+	bool HasRelic();
 
 	bool PickupRelic(const EcRelicType& relicType);
 

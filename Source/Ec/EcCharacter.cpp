@@ -308,9 +308,14 @@ bool AEcCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputC
 	return false;
 }
 
+bool AEcCharacter::HasRelic()
+{
+	return this->RelicType != EcRelicType::None;
+}
+
 bool AEcCharacter::PickupRelic(const EcRelicType& relicType)
 {
-	if (this->HasRelic) {
+	if (this->HasRelic()) {
 		return false;
 	}
 
@@ -320,12 +325,12 @@ bool AEcCharacter::PickupRelic(const EcRelicType& relicType)
 
 EcRelicType AEcCharacter::DropOffRelic()
 {
-	if (this->HasRelic) {
+	if (!this->HasRelic()) {
+		UE_LOG(LogTemp, Warning, TEXT("Player %s doesn't have a relic to drop off!"), *this->GetFullName());
 		return EcRelicType::None;
 	}
 
 	EcRelicType relicType = this->RelicType;
 	this->RelicType = EcRelicType::None;
-	this->HasRelic = false;
 	return relicType;
 }

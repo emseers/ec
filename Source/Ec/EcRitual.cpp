@@ -49,7 +49,7 @@ void AEcRitual::OnRitualZoneEnter(UPrimitiveComponent* OverlappedComponent, AAct
 	if (GM) {
 		const auto player = Cast<AEcCharacter>(OtherActor);
 
-		if(player != nullptr && player->HasRelic)
+		if(player != nullptr && player->HasRelic())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Player %s delivered relic"), *player->GetFullName());
 			this->Relics.Add(player->DropOffRelic());
