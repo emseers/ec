@@ -23,6 +23,8 @@ AEcRelic::AEcRelic()
 	RelicEnterZone->SetCollisionResponseToAllChannels(ECR_Ignore);
 	RelicEnterZone->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	RelicEnterZone->OnComponentBeginOverlap.AddDynamic(this, &AEcRelic::OnRelicZoneEnter);
+
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned

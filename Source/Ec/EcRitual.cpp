@@ -26,6 +26,8 @@ AEcRitual::AEcRitual()
 	RitualEnterZone->SetCollisionResponseToAllChannels(ECR_Ignore);
 	RitualEnterZone->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	RitualEnterZone->OnComponentBeginOverlap.AddDynamic(this, &AEcRitual::OnRitualZoneEnter);
+
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned

@@ -143,7 +143,7 @@ public:
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 protected:
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Replicated)
 	EcRelicType RelicType;
 
 public:
@@ -153,5 +153,7 @@ public:
 	bool PickupRelic(const EcRelicType& relicType);
 
 	EcRelicType DropOffRelic();
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
 
