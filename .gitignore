@@ -1,3 +1,14 @@
+## Houdini Content
+# Backups
+Houdini/backup
+Houdini/HDA/backup
+
+# Houdini Temp Files
+Content/HoudiniEngine/Temp
+
+
+# ======================
+
 ## https://raw.githubusercontent.com/github/gitignore/master/UnrealEngine.gitignore
 # Visual Studio 2015 user specific files
 .vs/
