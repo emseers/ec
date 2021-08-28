@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{ED2E8582-4E8A-3163-9938-C28B016819C6}",
+	"EngineAssociation": "{5EB67CE0-4A10-6D7E-7D6C-9B9E03F5281B}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -16,6 +16,10 @@
 	"Plugins": [
 		{
 			"Name": "HoudiniEngine",
+			"Enabled": true
+		},
+		{
+			"Name": "Water",
 			"Enabled": true
 		}
 	]
