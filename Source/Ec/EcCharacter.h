@@ -122,6 +122,19 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Replicated)
 	EcRelicType RelicType;
 
+	UPROPERTY()
+	UActorComponent* CurrentInteractionTarget;
+
+	void OnInteractStart();
+	void OnInteractStop();
+	UFUNCTION(Server, Reliable, WithValidation)
+	void OnServerInteractStart();
+	UFUNCTION(Server, Reliable, WithValidation)
+	void OnServerInteractStop();
+
+	bool DoInteractionTrace(struct FHitResult& HitResult) const;
+
+
 public:
 	UFUNCTION(BlueprintCallable)
 	bool HasRelic();
@@ -129,6 +142,10 @@ public:
 	bool PickupRelic(const EcRelicType& relicType);
 
 	EcRelicType DropOffRelic();
+
+
+	UPROPERTY(EditDefaultsOnly)
+	float InteractionDistance = 128.0f;
 
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

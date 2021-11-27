@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "EcCharacter.h"
+
+#include "EcInteractive.h"
 #include "EcProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -106,6 +108,8 @@ void AEcCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAxis("TurnRate", this, &AEcCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AEcCharacter::LookUpAtRate);
+
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AEcCharacter::OnInteractStart);
 }
 
 void AEcCharacter::OnFire()
@@ -214,6 +218,74 @@ bool AEcCharacter::EnableTouchscreenMovement(class UInputComponent* PlayerInputC
 		return true;
 	}
 	
+	return false;
+}
+
+void AEcCharacter::OnInteractStart()
+{
+	OnServerInteractStart();
+}
+
+void AEcCharacter::OnInteractStop()
+{
+	OnServerInteractStop();
+}
+
+void AEcCharacter::OnServerInteractStart_Implementation()
+{
+	FHitResult HitResult;
+	const bool bHit = DoInteractionTrace(HitResult);
+
+	if (bHit)
+	{
+		if (HitResult.GetComponent()->GetClass()->ImplementsInterface(UEcInteractive::StaticClass()))
+		{
+			IEcInteractive::Execute_OnInteractStart(HitResult.GetComponent(), this);
+		} else if (HitResult.GetActor()->GetClass()->ImplementsInterface(UEcInteractive::StaticClass()))
+		{
+			IEcInteractive::Execute_OnInteractStart(HitResult.GetActor(), this);
+		}
+	}
+}
+
+bool AEcCharacter::OnServerInteractStart_Validate()
+{
+	return true;
+}
+
+void AEcCharacter::OnServerInteractStop_Implementation()
+{
+	if (CurrentInteractionTarget != nullptr)
+	{
+		if (CurrentInteractionTarget->GetClass()->ImplementsInterface(UEcInteractive::StaticClass()))
+		{
+			IEcInteractive::Execute_OnInteractEnd(CurrentInteractionTarget, this);
+		} else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Current interaction target somehow doesn't implement EcInteractive!"));
+		}
+	}
+}
+
+bool AEcCharacter::OnServerInteractStop_Validate()
+{
+	return true;
+}
+
+bool AEcCharacter::DoInteractionTrace(FHitResult& HitResult) const
+{
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	Controller->GetPlayerViewPoint(CameraLocation, CameraRotation);
+	const FCollisionQueryParams TraceParams(FName(TEXT("PlayerInteractTrace")), true, this);
+	const FVector DistanceMax = CameraLocation + CameraRotation.Vector() * InteractionDistance;
+	GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, DistanceMax, ECC_GameTraceChannel2, TraceParams);
+
+	if (HitResult.GetComponent() && HitResult.IsValidBlockingHit())
+	{
+		return true;
+	}
+
 	return false;
 }
 
